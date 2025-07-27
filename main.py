@@ -4,6 +4,9 @@ from src.data.basic_dataset import BasicDataset
 from src.model.basic.ProdLDA import ProdLDA
 from src.trainer.basic.BasicTrainer import BasicTrainer
 from src.config.config import DEVICE
+from src.eva.topic_coherence import _coherence
+from src.eva.classification import _cls
+from src.eva.clustering import _clustering
 
 def main():
     data_dir = "./data"
@@ -25,11 +28,27 @@ def main():
     dataset = BasicDataset(dataset_dir=data_dir, batch_size=128, device=DEVICE, read_labels=True)
 
     model = ProdLDA(vocab_size=dataset.vocab_size, num_topics=20, en_units=100, dropout=0.2).to(DEVICE)
-    trainer = BasicTrainer(model=model, dataset=dataset, epochs=10, batch_size=128, num_top_words=10, verbose=True)
+    trainer = BasicTrainer(model=model, dataset=dataset, epochs=100, batch_size=128, num_top_words=10, verbose=True)
     top_words, train_theta = trainer.train()
 
     for i, words in enumerate(top_words):
         print(f"Topic {i}: {words}")
+        
+    coherence = _coherence(
+        reference_corpus=dataset.train_texts,
+        vocab=dataset.vocab,
+        top_words=top_words,
+        coherence_type='c_v'
+    )
+    print(f"Topic Coherence (c_v): {coherence:.4f}")
+
+    if hasattr(dataset, "train_labels") and dataset.train_labels is not None:
+        acc = _cls(train_theta, dataset.train_labels)
+        print(f"Classification accuracy: {acc:.4f}")
+
+    nmi, ari = _clustering(train_theta, dataset.train_labels)
+    print(f"Clustering NMI: {nmi:.4f}, ARI: {ari:.4f}")
+
 
 if __name__ == "__main__":
     main()
