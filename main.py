@@ -5,6 +5,7 @@ from src.model.basic.ProdLDA import ProdLDA
 from src.trainer.basic.BasicTrainer import BasicTrainer
 from src.config.config import DEVICE
 from src.eva.topic_coherence import _coherence
+from src.eva.topic_diversity import _diversity
 from src.eva.classification import _cls
 from src.eva.clustering import _clustering
 
@@ -34,21 +35,19 @@ def main():
     for i, words in enumerate(top_words):
         print(f"Topic {i}: {words}")
         
-    coherence = _coherence(
-        reference_corpus=dataset.train_texts,
-        vocab=dataset.vocab,
-        top_words=top_words,
-        coherence_type='c_v'
-    )
-    print(f"Topic Coherence (c_v): {coherence:.4f}")
+    TC = _coherence(dataset.train_texts, dataset.vocab, top_words)
+    print(f"TC: {TC:.5f}")
+    
+    TD = _diversity(top_words)    
+    print(f"TD: {TD:.5f}")
 
     train_theta, test_theta = trainer.export_theta()
-    if hasattr(dataset, "train_labels") and dataset.train_labels is not None and hasattr(dataset, "test_labels") and dataset.test_labels is not None:
-        acc = _cls(train_theta, test_theta, dataset.train_labels, dataset.test_labels)
-        print(f"Classification accuracy: {acc['acc']:.4f}, Macro-F1: {acc['macro-F1']:.4f}")
+    
+    clt_results = _clustering(test_theta, dataset.test_labels)
+    print(clt_results)
 
-    nmi, ari = _clustering(train_theta, dataset.train_labels)
-    print(f"Clustering NMI: {float(nmi):.4f}, ARI: {float(ari):.4f}")
+    cls_results = _clustering(train_theta, test_theta, dataset.train_labels, dataset.test_labels)
+    print(cls_results)
 
 
 if __name__ == "__main__":
