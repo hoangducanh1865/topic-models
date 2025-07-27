@@ -6,7 +6,7 @@ from src.trainer.basic.BasicTrainer import BasicTrainer
 from src.config.config import DEVICE
 
 def main():
-    data_dir = "./data/20ng_all"
+    data_dir = "./data"
     download_save("./data")
 
     preprocess = Preprocess(vocab_size=2000, verbose=True)
