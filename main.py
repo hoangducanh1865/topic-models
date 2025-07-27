@@ -42,9 +42,10 @@ def main():
     )
     print(f"Topic Coherence (c_v): {coherence:.4f}")
 
+    train_theta, test_theta = trainer.export_theta()
     if hasattr(dataset, "train_labels") and dataset.train_labels is not None and hasattr(dataset, "test_labels") and dataset.test_labels is not None:
-        acc = _cls(train_theta, dataset.train_labels, dataset.test_labels)
-        print(f"Classification accuracy: {acc:.4f}")
+        acc = _cls(train_theta, test_theta, dataset.train_labels, dataset.test_labels)
+        print(f"Classification accuracy: {acc['acc']:.4f}, Macro-F1: {acc['macro-F1']:.4f}")
 
     nmi, ari = _clustering(train_theta, dataset.train_labels)
     print(f"Clustering NMI: {nmi:.4f}, ARI: {ari:.4f}")
