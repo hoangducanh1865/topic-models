@@ -10,7 +10,17 @@ def main():
     download_save("./data")
 
     preprocess = Preprocess(vocab_size=2000, verbose=True)
-    preprocess.preprocess_jsonlist(data_dir, label_name='group')
+    rst = preprocess.preprocess_jsonlist(data_dir, label_name='group')
+    preprocess.save(
+        data_dir,
+        vocab=rst['vocab'],
+        train_texts=rst['train_texts'],
+        train_bow=rst['train_bow'],
+        train_labels=rst.get('train_labels'),
+        test_texts=rst.get('test_texts'),
+        test_bow=rst.get('test_bow'),
+        test_labels=rst.get('test_labels')
+    )
 
     dataset = BasicDataset(dataset_dir=data_dir, batch_size=128, device=DEVICE, read_labels=True)
 
