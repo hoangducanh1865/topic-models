@@ -46,7 +46,7 @@ def main():
     clt_results = _clustering(test_theta, dataset.test_labels)
     print(clt_results)
 
-    cls_results = _clustering(train_theta, test_theta, dataset.train_labels, dataset.test_labels)
+    cls_results = _cls(train_theta, test_theta, dataset.train_labels, dataset.test_labels)
     print(cls_results)
 
 
