@@ -48,7 +48,7 @@ def main():
         print(f"Classification accuracy: {acc['acc']:.4f}, Macro-F1: {acc['macro-F1']:.4f}")
 
     nmi, ari = _clustering(train_theta, dataset.train_labels)
-    print(f"Clustering NMI: {nmi:.4f}, ARI: {ari:.4f}")
+    print(f"Clustering NMI: {float(nmi):.4f}, ARI: {float(ari):.4f}")
 
 
 if __name__ == "__main__":
