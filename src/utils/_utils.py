@@ -15,7 +15,7 @@ def get_top_words(beta, vocab, num_top_words, verbose=False):
 
 
 def get_stopwords_set(stopwords=[]):
-    from topmost.data import download_dataset
+    from src.data.download import download_dataset
 
     if stopwords == 'English':
         from gensim.parsing.preprocessing import STOPWORDS as stopwords
