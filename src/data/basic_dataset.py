@@ -132,7 +132,12 @@ class BasicDataset:
 
         self.train_bow = scipy.sparse.load_npz(f'{path}/train_bow.npz').toarray().astype('float32')
         self.test_bow = scipy.sparse.load_npz(f'{path}/test_bow.npz').toarray().astype('float32')
-        self.pretrained_WE = scipy.sparse.load_npz(f'{path}/word_embeddings.npz').toarray().astype('float32')
+        import os
+        we_path = f'{path}/word_embeddings.npz'
+        if os.path.exists(we_path):
+            self.pretrained_WE = scipy.sparse.load_npz(we_path).toarray().astype('float32')
+        else:
+            self.pretrained_WE = None
 
         self.train_texts = file_utils.read_text(f'{path}/train_texts.txt')
         self.test_texts = file_utils.read_text(f'{path}/test_texts.txt')
