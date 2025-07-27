@@ -5,7 +5,7 @@ import scipy.io
 import scipy.sparse
 from scipy.sparse import issparse
 from sentence_transformers import SentenceTransformer
-from src.preprocess import Preprocess
+from src.preprocess.preprocess import Preprocess
 from src.data import file_utils
 from typing import List, Tuple, Union, Mapping, Any, Callable, Iterable
 from src.config.config import DEVICE
