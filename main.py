@@ -29,7 +29,7 @@ def main():
     dataset = BasicDataset(dataset_dir=data_dir, batch_size=128, device=DEVICE, read_labels=True)
 
     model = ProdLDA(vocab_size=dataset.vocab_size, num_topics=20, en_units=100, dropout=0.2).to(DEVICE)
-    trainer = BasicTrainer(model=model, dataset=dataset, epochs=100, batch_size=128, num_top_words=10, verbose=True)
+    trainer = BasicTrainer(model=model, dataset=dataset, epochs=500, batch_size=128, num_top_words=10, verbose=True)
     top_words, train_theta = trainer.train()
 
     for i, words in enumerate(top_words):
